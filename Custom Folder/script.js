@@ -1,13 +1,13 @@
 //let DataBase = [];
-let  DataCount = [0,0,0,0,0,0,0]
-const DataBase = ['Black Widow', 'Captain America', 'Hawkeye', 'Tony Stark', 'Thor', 'Captain Marvel','unknown']
+let  DataCount = [0,0,0,0,0,0,0,0]
+const DataBase = ['Shubham','Black Widow', 'Captain America', 'Hawkeye', 'Tony Stark', 'Thor', 'Captain Marvel','unknown']
 
 const video = document.getElementById('videoInput')
 
 Promise.all([
-    faceapi.nets.faceRecognitionNet.loadFromUri('models/'),
-    faceapi.nets.faceLandmark68Net.loadFromUri('models/'),
-    faceapi.nets.ssdMobilenetv1.loadFromUri('models/') //heavier/accurate version of tiny face detector
+    faceapi.nets.faceRecognitionNet.loadFromUri('https://raw.githubusercontent.com/ShubhamKhunt1872003/Face-Recognition-door-lock-using-api-/master/Custom Folder/models/'),
+    faceapi.nets.faceLandmark68Net.loadFromUri('https://raw.githubusercontent.com/ShubhamKhunt1872003/Face-Recognition-door-lock-using-api-/master/Custom Folder/models/'),
+    faceapi.nets.ssdMobilenetv1.loadFromUri('https://raw.githubusercontent.com/ShubhamKhunt1872003/Face-Recognition-door-lock-using-api-/master/Custom Folder/models/') //heavier/accurate version of tiny face detector
 ]).then(start)
 
 function start() {
@@ -49,12 +49,12 @@ async function recognizeFaces() {
                 const box = resizedDetections[i].detection.box
                 if(DataCount.indexOf(5) != -1)
                 {
-                    console.log("DONE BRO");
+                    console.log("Your good to go");
                 }
                 DataCount[(DataBase.indexOf(result.toString().split(" ")[0]))]++;
                 
-               // console.log(/^unknown/.test(result.toString()))
-                console.log(result.toString())
+            //    // console.log(/^unknown/.test(result.toString()))
+               console.log(result.toString())
                 const drawBox = new faceapi.draw.DrawBox(box, { label: result.toString() })
                 drawBox.draw(canvas)
             })
@@ -67,13 +67,13 @@ async function recognizeFaces() {
 
 
 function loadLabeledImages() {
-    const labels = ['Black Widow', 'Captain America', 'Hawkeye', 'Tony Stark', 'Thor', 'Captain Marvel']
+    const labels = ['Shubham','Black Widow', 'Captain America', 'Hawkeye', 'Tony Stark', 'Thor', 'Captain Marvel']
     //const labels = ['Prashant Kumar'] // for WebCam
     return Promise.all(
         labels.map(async (label)=>{
             const descriptions = []
             for(let i=1; i<=2; i++) {
-                const img = await faceapi.fetchImage(`raw.githubusercontent.com/${user}/${repo}/${branch}/${path}labeled_images/${label}/${i}.jpg`)
+                const img = await faceapi.fetchImage(`https://raw.githubusercontent.com/ShubhamKhunt1872003/Face-Recognition-door-lock-using-api-/master/Custom Folder/labeled_images/${label}/${i}.jpg`)
                 const detections = await faceapi.detectSingleFace(img).withFaceLandmarks().withFaceDescriptor()
                 console.log(label + i + JSON.stringify(detections))
                 descriptions.push(detections.descriptor)
